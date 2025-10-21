@@ -49,6 +49,12 @@ async function seed() {
         password: "jata3", 
         isAdmin: false 
       },
+      { 
+        username: "Alceu", 
+        email: null, 
+        password: "alceu7", 
+        isAdmin: false 
+      },
     ];
 
     for (const user of usersToCreate) {
