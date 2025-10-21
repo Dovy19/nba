@@ -74,7 +74,7 @@ export function ParallaxHero({ imageUrl, session }: ParallaxHeroProps) {
               "The only way to prove you're a good sport is to lose."
             </p>
             <p className="text-lg md:text-xl text-white/80 drop-shadow-md">
-              Predict the season. Challenge your friends. Prove you know basketball.
+              Predict the season. Get your money up. Prove you know ball.
             </p>
           </div>
 
