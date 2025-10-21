@@ -71,7 +71,7 @@ export function ParallaxHero({ imageUrl, session }: ParallaxHeroProps) {
           {/* Inspirational Text */}
           <div className="space-y-4">
             <p className="text-2xl md:text-3xl text-white/90 font-semibold drop-shadow-lg">
-              "The only way to prove you're a good sport is to lose."
+              "Hot takes. Cold results."
             </p>
             <p className="text-lg md:text-xl text-white/80 drop-shadow-md">
               Predict the season. Get your money up. Prove you know ball.
