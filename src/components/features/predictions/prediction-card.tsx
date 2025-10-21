@@ -3,19 +3,36 @@ import { CompactTeamList } from './compact-team-list';
 import { formatTimestamp } from '@/lib/utils/date';
 import { getTeamsByIds } from '@/lib/utils/team-helpers';
 import { Card } from '@/components/ui/card';
+import { CommentList } from '../comments/comment-list';
+
+interface Comment {
+  id: number;
+  userId: string;
+  username: string;
+  content: string;
+  createdAt: Date;
+}
 
 interface PredictionCardProps {
+  predictionId: number;
   username: string;
   eastConference: number[];
   westConference: number[];
   updatedAt: Date;
+  comments: Comment[];
+  isLoggedIn: boolean;
+  playInOutcomes?: Record<number, 'makes_playoffs' | 'out_in_playins'>;
 }
 
 export function PredictionCard({
+  predictionId,
   username,
   eastConference,
   westConference,
   updatedAt,
+  comments,
+  isLoggedIn,
+  playInOutcomes = {},
 }: PredictionCardProps) {
   // Convert team IDs to Team objects
   const eastTeams = getTeamsByIds(eastConference, NBA_TEAMS);
@@ -35,9 +52,24 @@ export function PredictionCard({
 
       {/* Two Conference Columns */}
       <div className="grid md:grid-cols-2 gap-6">
-        <CompactTeamList teams={eastTeams} title="Eastern Conference" />
-        <CompactTeamList teams={westTeams} title="Western Conference" />
+        <CompactTeamList 
+          teams={eastTeams} 
+          title="Eastern Conference"
+          playInOutcomes={playInOutcomes}
+        />
+        <CompactTeamList 
+          teams={westTeams} 
+          title="Western Conference"
+          playInOutcomes={playInOutcomes}
+        />
       </div>
+
+      {/* Comments Section */}
+      <CommentList 
+        predictionId={predictionId.toString()} 
+        comments={comments}
+        isLoggedIn={isLoggedIn}
+      />
     </Card>
   );
 }

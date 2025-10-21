@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth/session';
 import { getTeamsByConference, NBA_TEAMS } from '@/lib/data/teams';
-import { PredictionBuilder } from '@/components/features/predictions/prediction-builder';
 import { isBeforeDeadline } from '@/lib/utils/date';
 import { SEASON_START_DATE, CURRENT_SEASON } from '@/lib/utils/constants';
 import { getUserPrediction } from '@/lib/db';
 import { getTeamsByIds } from '@/lib/utils/team-helpers';
+import { PredictionBuilderWrapper } from '@/components/features/predictions/prediction-builder-wrapper';
 
 export default async function NewPredictionPage() {
   // Check authentication
@@ -37,10 +37,11 @@ export default async function NewPredictionPage() {
   return (
     <div className="min-h-screen bg-[#121212] py-12">
       <div className="container mx-auto px-4 max-w-7xl">
-        <PredictionBuilder
+        <PredictionBuilderWrapper
           initialEastTeams={eastTeams}
           initialWestTeams={westTeams}
           isEditing={!!existingPrediction}
+          initialPlayInOutcomes={existingPrediction?.playInOutcomes as Record<number, 'makes_playoffs' | 'out_in_playins'> || {}}
         />
       </div>
     </div>

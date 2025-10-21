@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, desc } from 'drizzle-orm';
 import * as schema from './schema';
 
 // Load environment variables
@@ -15,7 +15,7 @@ const sql = neon(process.env.DATABASE_URL);
 export const db = drizzle(sql, { schema });
 
 // Import tables from schema
-const { users, predictions } = schema;
+const { users, predictions, comments } = schema;
 
 /**
  * Get user by username
@@ -71,4 +71,33 @@ export async function getAllPredictions(season: string) {
     .where(eq(predictions.season, season));
 
   return result;
+}
+
+/**
+ * Get all comments for a specific prediction
+ */
+export async function getCommentsByPrediction(predictionId: number) {
+  const result = await db
+    .select()
+    .from(comments)
+    .where(eq(comments.predictionId, predictionId.toString()))
+    .orderBy(desc(comments.createdAt));
+
+  return result;
+}
+
+/**
+ * Create a new comment
+ */
+export async function createComment(predictionId: string, userId: string, content: string) {
+  const result = await db
+    .insert(comments)
+    .values({
+      predictionId,
+      userId,
+      content,
+    })
+    .returning();
+
+  return result[0];
 }

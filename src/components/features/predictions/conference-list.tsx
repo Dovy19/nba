@@ -10,9 +10,11 @@ import { DraggableTeamItem } from './draggable-team-item';
 interface ConferenceListProps {
   title: string;
   teams: Team[];
+  playInOutcomes: Record<number, 'makes_playoffs' | 'out_in_playins'>;
+  isDraggingBadge?: boolean;
 }
 
-export function ConferenceList({ title, teams }: ConferenceListProps) {
+export function ConferenceList({ title, teams, playInOutcomes, isDraggingBadge = false }: ConferenceListProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Conference Title */}
@@ -31,6 +33,8 @@ export function ConferenceList({ title, teams }: ConferenceListProps) {
               key={team.id}
               team={team}
               rank={index + 1}
+              playInOutcome={playInOutcomes[team.id]}
+              isDraggingBadge={isDraggingBadge}
             />
           ))}
         </div>

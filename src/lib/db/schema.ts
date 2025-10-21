@@ -11,18 +11,19 @@ export const users = pgTable('users', {
 
 export const predictions = pgTable('predictions', {
   id: serial('id').primaryKey(),
-  userId: text('user_id').notNull(), // Changed from integer to text
+  userId: text('user_id').notNull(),
   season: text('season').notNull(),
   eastConference: jsonb('east_conference').notNull().$type<number[]>(),
   westConference: jsonb('west_conference').notNull().$type<number[]>(),
+  playInOutcomes: jsonb('play_in_outcomes').$type<Record<number, 'makes_playoffs' | 'out_in_playins'>>().default({}), // ADD THIS LINE
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
-  predictionId: text('prediction_id').notNull(), // Changed from integer to text
-  userId: text('user_id').notNull(), // Changed from integer to text
+  predictionId: text('prediction_id').notNull(),
+  userId: text('user_id').notNull(),
   content: text('content').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });

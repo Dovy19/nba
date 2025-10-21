@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { db, getUserPrediction } from '@/lib/db';
 import { predictions } from '@/lib/db/schema';
 import { getSession } from '@/lib/auth/session';
@@ -23,8 +22,13 @@ export async function createPrediction(data: unknown) {
       return { success: false, error: "The deadline has passed. Predictions are locked." };
     }
 
+    // Debug log incoming data
+    console.log('📥 Incoming prediction data:', JSON.stringify(data, null, 2));
+
     // Validate input
     const validated = predictionSchema.parse(data);
+    
+    console.log('✅ Validation passed:', validated);
 
     // Check if user already has a prediction for this season
     const existingPrediction = await getUserPrediction(session.user.id, CURRENT_SEASON);
@@ -36,6 +40,7 @@ export async function createPrediction(data: unknown) {
         .set({
           eastConference: validated.eastConference,
           westConference: validated.westConference,
+          playInOutcomes: validated.playInOutcomes || {},
           updatedAt: new Date(),
         })
         .where(
@@ -51,6 +56,7 @@ export async function createPrediction(data: unknown) {
         season: validated.season,
         eastConference: validated.eastConference,
         westConference: validated.westConference,
+        playInOutcomes: validated.playInOutcomes || {},
       });
     }
 
@@ -59,9 +65,10 @@ export async function createPrediction(data: unknown) {
     
     return { success: true };
   } catch (error) {
-    console.error('Create prediction error:', error);
+    console.error('❌ Create prediction error:', error);
     
     if (error instanceof Error && error.name === 'ZodError') {
+      console.error('Zod validation errors:', (error as any).errors);
       return { success: false, error: "Invalid prediction data" };
     }
     
