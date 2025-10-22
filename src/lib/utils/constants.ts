@@ -1,4 +1,4 @@
-export const CURRENT_SEASON = "2025-26";
+export const CURRENT_SEASON = "2024-25";
 
 // Oct 22, 2025, 2:30 AM EET = Oct 22, 2025, 12:30 AM UTC
 export const SEASON_START_DATE = new Date("2025-11-01T00:30:00.000Z");
