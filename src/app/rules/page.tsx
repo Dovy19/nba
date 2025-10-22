@@ -24,7 +24,7 @@ export default function RulesPage() {
             </h2>
             <div className="space-y-3 text-gray-300 leading-relaxed">
               <p>
-                Before the season starts (deadline: <strong className="text-white">October 22, 2025 at 2:30 AM EET</strong>), 
+                Before the season starts (deadline: <strong className="text-white">November 1, 2025 at 2:30 AM EET</strong>), 
                 rank all 30 NBA teams in order from 1st to 15th place in each conference.
               </p>
               <p>
